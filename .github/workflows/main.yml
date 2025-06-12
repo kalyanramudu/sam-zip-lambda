@@ -3,49 +3,46 @@ name: Deploy SAM Lambda
 on:
   push:
     branches:
-      - master  # Or your desired branch
+      - main  # Trigger on push to main branch (change if needed)
 
 jobs:
   deploy:
-    name: Deploy Lambda using SAM
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '22'  # Match your lambda runtime
+          node-version: '22'
 
-      - name: Install AWS CLI
-        run: |
-          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-          unzip awscliv2.zip
-          sudo ./aws/install
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-      - name: Install SAM CLI
-        run: |
-          pip install aws-sam-cli
+      - name: Install AWS SAM CLI
+        run: pip install aws-sam-cli
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1  # or your region
+          aws-region: us-east-1
 
-      - name: Build SAM App
+      - name: SAM Build
         run: sam build
 
-      - name: Package SAM App
+      - name: SAM Package
         run: |
           sam package \
-            --s3-bucket your-sam-artifacts-bucket-name \
-            --output-template-file packaged.yaml
+            --output-template-file packaged.yaml \
+            --s3-bucket your-sam-artifacts-bucket-name
 
-      - name: Deploy SAM App
+      - name: SAM Deploy
         run: |
           sam deploy \
             --template-file packaged.yaml \
