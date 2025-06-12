@@ -3,7 +3,7 @@ name: Deploy SAM Lambda
 on:
   push:
     branches:
-      - main  # Trigger on push to main branch (change if needed)
+      - master  # Trigger on push to main branch (change if needed)
 
 jobs:
   deploy:
