@@ -40,7 +40,7 @@ jobs:
         run: |
           sam package \
             --output-template-file packaged.yaml \
-            --s3-bucket your-sam-artifacts-bucket-name
+            --s3-bucket jenkinsdir1
 
       - name: SAM Deploy
         run: |
