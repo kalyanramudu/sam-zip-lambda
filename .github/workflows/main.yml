@@ -1,45 +1,54 @@
-
-name: Deploy SAM app on Self-Hosted Runner
+name: Deploy SAM Lambda
 
 on:
   push:
     branches:
-      - master
-
-env:
-  AWS_REGION: us-east-1
-  S3_BUCKET: jenkinsdir
-  STACK_NAME: kalyansam
+      - main  # Or your desired branch
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    name: Deploy Lambda using SAM
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'  # Match your lambda runtime
+
+      - name: Install AWS CLI
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+
+      - name: Install SAM CLI
+        run: |
+          pip install aws-sam-cli
+
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v3
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: us-east-1  # or your region
 
-      - name: Setup Homebrew (if needed)
-        run: |
-          echo '' >> /home/tempuser/.bashrc
-          echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /home/tempuser/.bashrc
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
-      - name: Build SAM application
+      - name: Build SAM App
         run: sam build
 
-      - name: Package SAM application
-        run: sam package --output-template-file packaged.yaml --s3-bucket ${{ env.S3_BUCKET }} --region ${{ env.AWS_REGION }}
+      - name: Package SAM App
+        run: |
+          sam package \
+            --s3-bucket your-sam-artifacts-bucket-name \
+            --output-template-file packaged.yaml
 
-      - name: Deploy SAM application
-        run: sam deploy --template-file packaged.yaml --stack-name ${{ env.STACK_NAME }} --capabilities CAPABILITY_IAM --region ${{ env.AWS_REGION }} --no-confirm-changeset
-
-      - name: Print completion message
-        run: echo "SAM deployment completed successfully!"
+      - name: Deploy SAM App
+        run: |
+          sam deploy \
+            --template-file packaged.yaml \
+            --stack-name kalyan-lambda-sam-app \
+            --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND \
+            --region us-east-1
