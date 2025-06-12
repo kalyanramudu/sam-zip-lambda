@@ -1,4 +1,4 @@
-name: Deploy SAM Lambda 
+name: Deploy to prod
 
 on:
   workflow_dispatch:  # Enables manual trigger via GitHub Actions UI
