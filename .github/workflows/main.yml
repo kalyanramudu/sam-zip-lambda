@@ -1,9 +1,11 @@
 name: Deploy SAM Lambda 
 
 on:
-  push:
-    branches:
-      - master  # Trigger on push to main branch (change if needed)
+  workflow_dispatch:  # Enables manual trigger via GitHub Actions UI
+#on:
+  #push:
+    #branches:
+      #- master  # Trigger on push to main branch (change if needed)
 
 jobs:
   deploy:
