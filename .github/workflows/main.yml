@@ -1,4 +1,4 @@
-name: Deploy SAM Lambda
+name: Deploy SAM Lambda 
 
 on:
   push:
