@@ -60,16 +60,20 @@ jobs:
             --s3-bucket ${{ env.S3_BUCKET }} \
             --s3-prefix ${{ env.S3_BUCKET_PREFIX }}
 
-      - name: SAM Deploy
+      - name: SAM Delete
         run: |
-          sam deploy \
-            --template-file packaged.yaml \
-            --stack-name ${{ env.APP_NAME }} \
-            --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND \
-            --region ${{ env.AWS_DEFAULT_REGION }} \
-            --no-confirm-changeset \
-            --no-fail-on-empty-changeset \
-            --parameter-overrides \
-              Environment=${{ env.ENV_NAME }} \
-              S3Bucket=${{ env.S3_BUCKET }} \
-              S3Prefix=${{ env.S3_BUCKET_PREFIX }}
+          sam delete --stack-name kalyan-lambda-sam-app --region us-east-1 --no-prompts
+
+      # - name: SAM Deploy
+      #   run: |
+      #     sam deploy \
+      #       --template-file packaged.yaml \
+      #       --stack-name ${{ env.APP_NAME }} \
+      #       --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND \
+      #       --region ${{ env.AWS_DEFAULT_REGION }} \
+      #       --no-confirm-changeset \
+      #       --no-fail-on-empty-changeset \
+      #       --parameter-overrides \
+      #         Environment=${{ env.ENV_NAME }} \
+      #         S3Bucket=${{ env.S3_BUCKET }} \
+      #         S3Prefix=${{ env.S3_BUCKET_PREFIX }}
