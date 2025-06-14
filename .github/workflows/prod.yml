@@ -1,4 +1,4 @@
-name: Deploy SAM Lambda
+name: Deploy SAM Lambda in prod environment
 
 on:
   workflow_dispatch:
