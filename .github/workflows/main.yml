@@ -53,15 +53,15 @@ jobs:
             --output-template-file packaged.yaml \
             --s3-bucket jenkinsdir1
 
-      # - name: SAM Delete
-      #   run: |
-      #     sam delete --stack-name kalyan-lambda-sam-app --region us-east-1 --no-prompts
-      - name: SAM Deploy
+      - name: SAM Delete
         run: |
-          sam deploy \
-            --template-file packaged.yaml \
-            --stack-name kalyan-lambda-sam-app \
-            --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND \
-            --region us-east-1 \
-            --no-confirm-changeset \
-            --no-fail-on-empty-changeset
+          sam delete --stack-name kalyan-lambda-sam-app --region us-east-1 --no-prompts
+      # - name: SAM Deploy
+      #   run: |
+      #     sam deploy \
+      #       --template-file packaged.yaml \
+      #       --stack-name kalyan-lambda-sam-app \
+      #       --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND \
+      #       --region us-east-1 \
+      #       --no-confirm-changeset \
+      #       --no-fail-on-empty-changeset
