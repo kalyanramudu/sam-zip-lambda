@@ -11,10 +11,6 @@ on:
         description: "S3 Bucket for Artifacts"
         required: true
         default: "nomo-sam-pipeline-artifacts"
-      s3_bucket_prefix:
-        description: "S3 Prefix for Artifacts"
-        required: true
-        default: "nomo-lambdas-development-artifacts"
 
 permissions:
   id-token: write
@@ -28,7 +24,8 @@ jobs:
       APP_NAME: nomo-lambdas-${{ github.event.inputs.environment }}
       ENV_NAME: ${{ github.event.inputs.environment }}
       S3_BUCKET: ${{ github.event.inputs.s3_bucket }}
-      S3_BUCKET_PREFIX: ${{ github.event.inputs.s3_bucket_prefix }}
+      S3_BUCKET_PREFIX: nomo-lambdas-${{ github.event.inputs.environment }}-artifacts
+
 
     steps:
       - name: Checkout Code
