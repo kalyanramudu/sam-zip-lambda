@@ -1,12 +1,12 @@
 name: Deploy SAM Lambda (Branch-Based Environment)
 
-# on:
-#   workflow_dispatch:
-
 on:
-  push:
-    branches:
-      - Prod  # Trigger on push to main branch (change if needed)
+  workflow_dispatch:
+
+# on:
+#   push:
+#     branches:
+#       - Prod  # Trigger on push to main branch (change if needed)
     inputs:
       s3_bucket:
         description: "S3 Bucket for Artifacts"
