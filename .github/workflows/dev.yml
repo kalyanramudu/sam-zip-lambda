@@ -57,8 +57,8 @@ jobs:
         run: |
           sam delete --stack-name ${{ env.APP_NAME }} --region us-east-1 --no-prompts
 
-      # - name: SAM Build
-      #   run: sam build
+      - name: SAM Build
+        run: sam build
 
       # - name: SAM Package
       #   run: |
